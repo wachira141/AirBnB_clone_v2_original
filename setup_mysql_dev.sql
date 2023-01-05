@@ -4,5 +4,5 @@ USE hbnb_dev_db;
 GRANT ALL PRIVELEGES ON hbnb_dev_db.* TO 'hbnb_dev'@'localhost';
 USE performance_schema;
 GRANT SELECT ON performance_schema.* TO 'hbnb_dev'@'localhost';
-FLUSH PRIVELEGES;
+FLUSH PRIVILEGES;
 SET FOREIGN_KEY_CHECKS=1;
