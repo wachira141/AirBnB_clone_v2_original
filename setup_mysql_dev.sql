@@ -1,3 +1,5 @@
+--prepares a hbnb_test_db MySql server for the project
+--GRANT *.* to user hbnb_test
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';
 USE hbnb_dev_db;
