@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String,Float,ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Table
 import models
-from models.amenity import Amenity
+from models import amenity
 
 # if os.getenv("HBNB_TYPE_STORAGE") == 'db':
 
@@ -23,7 +23,7 @@ place_amenity = Table('place_amenity', Base.metadata,
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    __tablename = 'places'
+    __tablename__ = 'places'
     if os.getenv("HBNB_TYPE_STORAGE") == 'db':
         city_id = Column(String(60), ForeignKey('cities.id'),nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'),nullable=False)
@@ -73,9 +73,10 @@ class Place(BaseModel, Base):
             the attr amenity_ids that contains Amenity.id
             """
             list_amenities = []
-            for amenity in models.storage.all(Amenity).values():
-                if amenity.place_id == self.id:
-                    list_amenities.append(amenity)
+            
+            for amn in models.storage.all(amenity.Amenity).values():
+                if amn.place_id == self.id:
+                    list_amenities.append(amn)
             return list_amenities
 
         @amenities.setter
@@ -86,7 +87,8 @@ class Place(BaseModel, Base):
             """
             if obj != None:
                 from models import storage
-                for objs in storage.all(Amenity).values():
+                
+                for objs in storage.all(amenity.Amenity).values():
                     if objs.place_id == self.id:
                         self.amenity_ids.append(objs)
             
