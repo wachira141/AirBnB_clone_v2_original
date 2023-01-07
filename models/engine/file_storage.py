@@ -25,12 +25,18 @@ class FileStorage:
         """use of __class__ is to access class created dynamically"""
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f) 
+        json_objects = {}
+        for key in self.__objects:
+            json_objects[key] = self.__objects[key].to_dict()
+        with open(self.__file_path, 'w') as f:
+            json.dump(json_objects, f)
+
+        # with open(FileStorage.__file_path, 'w') as f:
+        #     temp = {}
+        #     temp.update(FileStorage.__objects)
+        #     for key, val in temp.items():
+        #         temp[key] = val.to_dict()
+        #     json.dump(temp, f) 
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -52,10 +58,9 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        print('{}: {}'.format(key, val))
-                        self.all()[key] = classes[val['__class__']](**val)
+                        self.__objects[key] = classes[temp[key]["__class__"]](**temp[key]) 
                         # print(classes[val['__class__']](**val))
-        except FileNotFoundError:
+        except:
             pass
     
     def delete(self, obj=None):
@@ -64,4 +69,7 @@ class FileStorage:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
                 del self.__objects[key]
+    def close(self):
+        """call reload() method for deserializing the JSON file to objects"""
+        self.reload()
 
